@@ -1,4 +1,6 @@
-package ims.models;
+package com.ims.server.model;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ public class Item {
 	@Column(name = "on_hand")
 	private Long onHand;
 	private Long available;
+	private Date dateDeleted;
 	
 	public Long getId() {
 		return id;
@@ -49,5 +52,11 @@ public class Item {
 	}
 	public void setAvailable(Long available) {
 		this.available = available;
+	}
+	public Date getDateDeleted() {
+		return dateDeleted;
+	}
+	public void setDateDeleted(Date dateDeleted) {
+		this.dateDeleted = dateDeleted;
 	}
 }
