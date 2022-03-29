@@ -42,6 +42,7 @@ public class ItemDetailsController {
 	public String recieveItems(@RequestBody List<ItemDetails> items) {
 		for (ItemDetails item : items) {
 			try {
+				item.setItemId(1); // TESTING FOR NOW, WILL CHANGE LATER
 				itemDetailsRepo.save(item);
 			} catch (Exception e) {
 				return "Failed"; // THIS SHOULD PROBABLY BE A TRANSACTIONAL I BET!
