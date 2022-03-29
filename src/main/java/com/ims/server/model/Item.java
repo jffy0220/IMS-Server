@@ -1,5 +1,6 @@
 package com.ims.server.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -22,7 +23,14 @@ public class Item {
 	private Long onHand;
 	private Long available;
 	private Date dateDeleted;
+	private BigDecimal value;
 	
+	public BigDecimal getValue() {
+		return value;
+	}
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
 	public Long getId() {
 		return id;
 	}

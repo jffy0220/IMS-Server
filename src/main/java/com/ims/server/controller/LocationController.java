@@ -16,6 +16,11 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import javassist.NotFoundException;
 
+/*
+ * 
+ * Note, we should probably update item details model to look for a location id, not name. And the location needs a foreign key id to the warehouse.
+ */
+
 @RestController
 @Api(tags = { "Location" })
 @SwaggerDefinition(tags = { @Tag(name = "Location", description = "Operations for managing locations") })
