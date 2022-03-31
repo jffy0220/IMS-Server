@@ -8,4 +8,6 @@ import com.ims.server.model.PurchaseOrderLineItems;
 @Repository
 public interface PurchaseOrderLineItemRepository extends CrudRepository<PurchaseOrderLineItems, Long>{
 
+	Iterable<PurchaseOrderLineItems> findAllByPoNumberId(Long id); // THIS MAY NOT BE RIGHT, WE SHALL SEE
+
 }

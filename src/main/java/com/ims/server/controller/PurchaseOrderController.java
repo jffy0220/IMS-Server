@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ims.server.model.PurchaseOrder;
@@ -52,12 +55,28 @@ public class PurchaseOrderController {
 			total = total.add(totalItemCost);
 			poLineItemRepo.save(item); // TESTING
 		}
-		
-		System.out.println("Total cost of order: ");
-		System.out.println(total); // TESTING
-		
 		purchaseOrder.setTotalNet(total.add(purchaseOrder.getTaxes()));
 		poRepo.save(purchaseOrder); // RESAVE THE PURCHASE ORDER, UPDATING THE TOTAL TAXES
 		return purchaseOrder;
+	}
+	
+	@GetMapping(path = "/purchase-order/single/no-items")
+	public PurchaseOrder getSinglePurchaseOrder(@RequestParam Long id) throws NotFoundException {
+		return poRepo.findById(id).orElseThrow(() -> new NotFoundException(null));
+	}
+	
+	@GetMapping(path = "/purchase-order")
+	public @ResponseBody Iterable<PurchaseOrder> getAllPurchaseOrders() {
+		return poRepo.findAll();
+	}
+	
+	@GetMapping(path = "/purchase-order/single/items")
+	public PurchaseOrderIncoming getPurchaseOrderLineItems(@RequestParam Long id) throws NotFoundException {
+		PurchaseOrder po = poRepo.findById(id).orElseThrow(() -> new NotFoundException(null));
+		Iterable<PurchaseOrderLineItems> poLineItems = poLineItemRepo.findAllByPoNumberId(po.getId());
+		PurchaseOrderIncoming poTotal = new PurchaseOrderIncoming();
+		poTotal.setPurchaseOrder(po);
+		poTotal.setLineItems(poLineItems);
+		return poTotal;
 	}
 }
