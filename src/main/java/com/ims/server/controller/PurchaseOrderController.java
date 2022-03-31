@@ -1,5 +1,8 @@
 package com.ims.server.controller;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,14 +37,27 @@ public class PurchaseOrderController {
 	private PurchaseOrderLineItemRepository poLineItemRepo;
 	
 	// There is further testing we need to do such as getting the total for each individual line item and the total for the entire purchase order, but we can do that another time
+	// NOTE: We need to add in the ability to see if a purchase order exists, and not allow that through. We can do that from the UI, but we need to double check at the server.
 	@PostMapping(path = "/purchase-order")
 	public PurchaseOrder createPurchaseOrder(@RequestBody PurchaseOrderIncoming po) throws NotFoundException {
 		PurchaseOrder purchaseOrder = new PurchaseOrder();
 		purchaseOrder = po.getPurchaseOrder();
+		purchaseOrder = poRepo.save(purchaseOrder);
+		BigDecimal total = new BigDecimal(BigInteger.ZERO, 4);
 		Iterable<PurchaseOrderLineItems> lineItems = po.getLineItems();
 		for (PurchaseOrderLineItems item : lineItems) {
+			item.setPoNumberId(purchaseOrder.getId()); // TESTING
+			BigDecimal totalItemCost = item.getPricePerUnit().multiply(new BigDecimal(item.getQuantity()));
+			item.setTotal(totalItemCost);
+			total = total.add(totalItemCost);
 			poLineItemRepo.save(item); // TESTING
 		}
-		return poRepo.save(purchaseOrder);
+		
+		System.out.println("Total cost of order: ");
+		System.out.println(total); // TESTING
+		
+		purchaseOrder.setTotalNet(total.add(purchaseOrder.getTaxes()));
+		poRepo.save(purchaseOrder); // RESAVE THE PURCHASE ORDER, UPDATING THE TOTAL TAXES
+		return purchaseOrder;
 	}
 }

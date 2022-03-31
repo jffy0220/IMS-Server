@@ -3,6 +3,7 @@ package com.ims.server.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,16 +17,26 @@ public class PurchaseOrder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "po_number")
 	private String poNumber;
+	@Column(name = "supplier_id")
 	private Long supplierId;
+	@Column(name = "payment_terms")
 	private String paymentTerms;
+	@Column(name = "shipping_method")
 	private String shipingMethod;
+	@Column(name = "shipped_date")
 	private Date shippedDate;
+	@Column(name = "expected_delivery")
 	private Date expectedDelivery;
+	@Column(name = "delivery_date")
 	private Date deliveryDate;
+	@Column(name = "created_date")
 	private Date createdDate;
+	@Column(name = "received_date")
 	private Date receivedDate;
 	private BigDecimal taxes;
+	@Column(name = "total_net")
 	private BigDecimal totalNet;
 	public Long getId() {
 		return id;

@@ -10,12 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "purchase_order")
+@Table(name = "purchase_order_line_items")
 public class PurchaseOrderLineItems {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "item_id")
 	private Long itemId;
 	
 	@Column(name = "po_number_id")
