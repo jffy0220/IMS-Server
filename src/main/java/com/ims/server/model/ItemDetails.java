@@ -21,6 +21,15 @@ public class ItemDetails {
 	// NOTE THAT THE DATE TYPE IS:
 	// yyyy-mm-dd'T'HH:mm:ss.sss
 	
+	@Column(name = "serial_number")
+	private String serialNumber;
+	
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 	@Column(name = "date_received")
 	private Date dateReceived;
 	
